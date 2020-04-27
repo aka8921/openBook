@@ -81,7 +81,7 @@
                 <span class="overline pt-2">
                   
 
-                  <v-btn :href=readOnline(detail.availability.identifier) target="_blank" :disabled=!detail.availability.identifier||0>
+                  <v-btn :href=readOnline(detail.availability.identifier) target="_blank" :disabled=!(detail.availability.identifier||0)>
                   
                     
                       read online
@@ -129,7 +129,7 @@ methods:{
         console.log("searching")
         this.$axios(
           {
-             url : `http://openlibrary.org/search.json`,
+             url : `https://openlibrary.org/search.json`,
              method : 'GET',
             params : {
             q : searchTerm,
