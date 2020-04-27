@@ -105,7 +105,8 @@
 
 
       </v-row> 
-
+      <v-btn @click="getlist(searchTerm, pagePosition-1)" :disabled=!pagePosition>PREV</v-btn>
+      <v-btn @click="getlist(searchTerm, pagePosition+1)" >NEXT</v-btn>
 
   </v-container>
   </div>
@@ -119,7 +120,8 @@ export default {
 data(){
     return{
         searchTerm: "",
-        details: []
+        details: [],
+        pagePosition: 0
     }
 },
 
