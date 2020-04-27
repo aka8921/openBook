@@ -13,7 +13,7 @@ Vue.use(VueRouter)
     component: Home
   },
   {
-    path: '/list/:id',
+    path: '/search/:id',
     name: 'List',
     component: List
   }

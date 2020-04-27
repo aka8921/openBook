@@ -45,7 +45,7 @@ export default {
     methods: {
       search(){
         
-        this.$router.push({ name: 'List', params: {id : '123'}})
+        this.$router.push({ name: 'List', params: {id : this.term}})
       }
     }
 }

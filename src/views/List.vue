@@ -1,7 +1,7 @@
 <template>
     <div>
         list component {{ $route.params.id }}
-        </div>
+    </div>
 </template>
 
 <script>
