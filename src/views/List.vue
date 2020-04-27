@@ -18,6 +18,7 @@
           prepend-icon="mdi-search"
           single-line
           v-model="searchTerm"
+          
           solo
           flat
           label="Search"
@@ -28,10 +29,11 @@
           cols="12"
           md="6" sm="12" lg="6"
           class="purple pa-0 ma-0 d-flex align-center justify-center"
+          @click="getlist( searchTerm )"
           >
         <div
           class="fullWidth d-flex justify-center align-center "
-          @click="getlist( searchTerm )"
+          
           
         ><span class="overline py-5">Search</span></div>
           </v-col>
@@ -68,25 +70,24 @@
               
               <div class="d-flex flex-column justify-center align-center ">
                 
-                  <v-img src="https://covers.openlibrary.org/b/id/8436146-L.jpg" />
+                  <v-img :src="getImgUrl(detail.cover_i)" class="blue-grey darken-4" width = "100%" height="300" alt = "image not found"/>
                 
                 <span class="headline pt-2">
                   {{detail.title}}
                 </span>
                 <span class="caption pt-2">
-                  3 editions
+                  {{detail.edition_count}} editions
                 </span>
                 <span class="overline pt-2">
                   
-                  <v-chip
-                    class="ma-2"
-                    color="green"
-                    text-color="white"
-                  >
-                    
-                      Read Online
+
+                  <v-btn :href=readOnline(detail.availability.identifier) target="_blank" :disabled=!detail.availability.identifier||0>
                   
-                  </v-chip>
+                    
+                      read online
+                  
+                  
+                  </v-btn>
                 </span>
                 
                 <div class="pa-0 ma-0">
@@ -123,10 +124,9 @@ data(){
 },
 
 methods:{
-    getlist( searchTerm ){
+    getlist( searchTerm, ofs = 0 ){
       
-        // this.$route.params.id = searchTerm
-        // alert(this.$route.params.id )
+        console.log("searching")
         this.$axios(
           {
              url : `http://openlibrary.org/search.json`,
@@ -134,7 +134,7 @@ methods:{
             params : {
             q : searchTerm,
             limit: 20,
-            offset: 0,
+            offset: ofs,
             },
             })
             .then(response => {
@@ -147,10 +147,19 @@ methods:{
                 console.log(error.response.data);
             })
     },
-     getImgUrl() {
-    var image = `https://covers.openlibrary.org/b/id/8436146-L.jpg`
+     getImgUrl(cover) {
+    var image = `https://covers.openlibrary.org/b/id/${cover}-L.jpg`
     return image
+    },
+
+    readOnline(identifier) {
+    var link = `https://archive.org/stream/${identifier}`
+    return link
   }
+},
+created(){
+  console.log(this.$route.params.id)
+  this.getlist( this.$route.params.id )
 }
 }
 </script>
