@@ -18,7 +18,6 @@
           prepend-icon="mdi-search"
           single-line
           v-model="searchTerm"
-          @keyup="getlist( searchTerm )"
           solo
           flat
           label="Search"
@@ -69,7 +68,7 @@
               
               <div class="d-flex flex-column justify-center align-center ">
                 
-                  <v-img :src="getImgUrl(detail.cover_edition_key)" />
+                  <v-img src="https://covers.openlibrary.org/b/id/8436146-L.jpg" />
                 
                 <span class="headline pt-2">
                   {{detail.title}}
@@ -145,11 +144,11 @@ methods:{
             })
             .catch( error => {
               console.log('error')
-                console.log(error);
+                console.log(error.response.data);
             })
     },
-     getImgUrl(cover) {
-    var image = `https://covers.openlibrary/org/b/id/${cover}-L.jpg`
+     getImgUrl() {
+    var image = `https://covers.openlibrary.org/b/id/8436146-L.jpg`
     return image
   }
 }
