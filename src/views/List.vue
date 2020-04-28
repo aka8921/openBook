@@ -151,8 +151,10 @@ export default {
   // TODO
   // -has to find some way to change the route params to whatever the new searchTerm is
     getlist( reset = 0 ){
-      //pagePosition needs to be set to zero for new search terms
-        if(reset === 1){this.pagePosition = 1}
+      //router given new params
+        if(reset === 1){
+          this.$router.push({ name: 'List', params: {id : this.searchTerm}})          
+          }
         var offs = (this.pagePosition-1)*this.limit
         console.log(this.pagePosition) 
         console.log("searching with offset "+offs)
