@@ -18,7 +18,7 @@
           prepend-icon="mdi-search"
           single-line
           v-model="searchTerm"
-          @keypress.enter="getlist()"
+          @keypress.enter="getlist(1)"
           solo
           flat
           label="Search"
@@ -151,7 +151,7 @@ export default {
   // TODO
   // -has to find some way to change the route params to whatever the new searchTerm is
     getlist( reset = 0 ){
-      //router given new params
+      //router given new params [this is not my best work]
         if(reset === 1){
           this.$router.push({ name: 'List', params: {id : this.searchTerm}})          
           }
