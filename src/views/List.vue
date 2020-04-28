@@ -148,11 +148,10 @@ export default {
   },
 
   methods:{
-  // TODO
-  // -has to find some way to change the route params to whatever the new searchTerm is
     getlist( reset = 0 ){
-      //router given new params [this is not my best work]
+      //router given new params
         if(reset === 1){
+          this.pagePosition = 1
           this.$router.push({ name: 'List', params: {id : this.searchTerm}})          
           }
         var offs = (this.pagePosition-1)*this.limit
