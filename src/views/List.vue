@@ -18,7 +18,7 @@
           prepend-icon="mdi-search"
           single-line
           v-model="searchTerm"
-          
+          @keypress.enter="getlist()"
           solo
           flat
           label="Search"
@@ -110,7 +110,7 @@
           <v-container class="max-width">
             <v-pagination
               v-model="pagePosition"
-              class="my-4"
+              class="my-4 page"
               :length="pageCount"
               total-visible = 5
               @input="getlist()"
@@ -128,39 +128,45 @@
 
 export default {
   name: 'List',
-data(){
-    return{
-        searchTerm: "",
-        totalItems: 0,
-        details: [],
-        pagePosition: 1,
-    }
-},
-computed: {
-  pageCount(){
-    return Math.ceil(this.totalItems/this.limit)
-  },
-  limit(){
-    return 20
-  }
-},
 
-methods:{
+  data(){
+      return{
+          searchTerm: "",
+          totalItems: 0,
+          details: [],
+          pagePosition: 1,
+      }
+  },
+
+  computed: { 
+    pageCount(){
+      return Math.ceil(this.totalItems/this.limit)
+    },
+    limit(){
+      return 20
+    }
+  },
+
+  methods:{
+  // TODO
+  // -has to find some way to change the route params to whatever the new searchTerm is
     getlist( reset = 0 ){
+      //pagePosition needs to be set to zero for new search terms
         if(reset === 1){this.pagePosition = 1}
         var offs = (this.pagePosition-1)*this.limit
         console.log(this.pagePosition) 
         console.log("searching with offset "+offs)
         this.$axios(
           {
-             url : `https://openlibrary.org/search.json`,
-             method : 'GET',
+            url : `https://openlibrary.org/search.json`,
+            method : 'GET',
             params : {
             q : this.searchTerm,
             limit: this.limit,
             offset: offs,
-            },
-            })
+            }
+
+          })
             .then(response => {
               console.log(response.data)
               this.totalItems = response.data.numFound
@@ -172,18 +178,26 @@ methods:{
             })
     },
      getImgUrl(cover) {
-    var image = `https://covers.openlibrary.org/b/id/${cover}-L.jpg`
-    return image
+
+      //the -S is giving blurry image so used -L
+      var image = `https://covers.openlibrary.org/b/id/${cover}-L.jpg` 
+      return image
+
     },
 
     readOnline(identifier) {
-    var link = `https://archive.org/stream/${identifier}`
-    return link
+
+      var link = `https://archive.org/stream/${identifier}`
+      return link
+
+      },
+  },
+  mounted(){
+    if(this.$route.params.id === null)this.$router.push({ name: 'Home'});
+    this.searchTerm = this.$route.params.id
+    this.getlist()
+
   }
-},
-created(){
-  this.searchTerm = this.$route.params.id
-  this.getlist()
-}
+
 }
 </script>

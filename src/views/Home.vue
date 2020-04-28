@@ -16,6 +16,7 @@
                                 name="user"
                                 label="Search Book"
                                 solo
+                                @keypress.enter="search"
                             ></v-text-field>
                             </v-card-text>
                             <div class="my-2 d-flex justify-center pb-5">
