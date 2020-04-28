@@ -29,7 +29,7 @@
           cols="12"
           md="6" sm="12" lg="6"
           class="purple pa-0 ma-0 d-flex align-center justify-center"
-          @click="getlist( searchTerm )"
+          @click="getlist( 1 )"
           >
         <div
           class="fullWidth d-flex justify-center align-center "
@@ -105,8 +105,19 @@
 
 
       </v-row> 
-      <v-btn @click="getlist(searchTerm, pagePosition-1)" :disabled=!pagePosition>PREV</v-btn>
-      <v-btn @click="getlist(searchTerm, pagePosition+1)" >NEXT</v-btn>
+       <v-row justify="center">
+        <v-col cols="8">
+          <v-container class="max-width">
+            <v-pagination
+              v-model="pagePosition"
+              class="my-4"
+              :length="pageCount"
+              total-visible = 5
+              @input="getlist()"
+            ></v-pagination>
+          </v-container>
+        </v-col>
+      </v-row>
 
   </v-container>
   </div>
@@ -120,33 +131,44 @@ export default {
 data(){
     return{
         searchTerm: "",
+        totalItems: 0,
         details: [],
-        pagePosition: 0
+        pagePosition: 1,
     }
+},
+computed: {
+  pageCount(){
+    return Math.ceil(this.totalItems/this.limit)
+  },
+  limit(){
+    return 20
+  }
 },
 
 methods:{
-    getlist( searchTerm, ofs = 0 ){
-      
-        console.log("searching")
+    getlist( reset = 0 ){
+        if(reset === 1){this.pagePosition = 1}
+        var offs = (this.pagePosition-1)*this.limit
+        console.log(this.pagePosition) 
+        console.log("searching with offset "+offs)
         this.$axios(
           {
              url : `https://openlibrary.org/search.json`,
              method : 'GET',
             params : {
-            q : searchTerm,
-            limit: 20,
-            offset: ofs,
+            q : this.searchTerm,
+            limit: this.limit,
+            offset: offs,
             },
             })
             .then(response => {
-              console.log('response')
-              this.details = response.data.docs;
-              console.log(this.details)
+              console.log(response.data)
+              this.totalItems = response.data.numFound
+              this.details = response.data.docs
             })
             .catch( error => {
               console.log('error')
-                console.log(error.response.data);
+                console.log(error.response.data)
             })
     },
      getImgUrl(cover) {
@@ -160,8 +182,8 @@ methods:{
   }
 },
 created(){
-  console.log(this.$route.params.id)
-  this.getlist( this.$route.params.id )
+  this.searchTerm = this.$route.params.id
+  this.getlist()
 }
 }
 </script>
