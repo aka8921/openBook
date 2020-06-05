@@ -1,5 +1,13 @@
 # open-book
 
+### Link
+
+https://frosty-lalande-783c13.netlify.app/
+
+### Screenshot
+
+![image](https://drive.google.com/uc?export=view&id=1Cs7V2r3YM6RBBufF-dwAjRnpLtan3vmS)
+
 ## Project setup
 ```
 yarn install
