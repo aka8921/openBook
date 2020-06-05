@@ -1,5 +1,7 @@
 # open-book
 
+This is basically a Vue.js frontend for the [Open Library Books API](https://openlibrary.org/dev/docs/api/books). This was basically a one day project I made in order to tinker with the api
+
 ### Link
 
 https://frosty-lalande-783c13.netlify.app/
